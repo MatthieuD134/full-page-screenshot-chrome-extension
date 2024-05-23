@@ -1,4 +1,5 @@
 import plugin from "tailwindcss/plugin";
+/* eslint-disable sonarjs/no-duplicate-string */
 
 export const shadcnPlugin = plugin(
   // 1. Add CSS variable definitions to the base layer
