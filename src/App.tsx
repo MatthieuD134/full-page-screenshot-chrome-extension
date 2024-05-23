@@ -1,6 +1,7 @@
-import reactLogo from '@src/assets/react.svg'
-import viteLogo from '@src/assets/vite.svg'
-import { Button } from '@src/component/ui/button'
+import reactLogo from '@src/assets/react.svg';
+import viteLogo from '@src/assets/vite.svg';
+import { Button } from '@src/component/ui/button';
+
 import { MESSAGE_ACTIONS } from '../shared/constants/chrome-message';
 
 function App() {
