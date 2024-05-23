@@ -22,18 +22,10 @@
 
     "baseUrl": ".",
     "paths": {
-      "@src/*": [
-        "./src/*"
-      ],
-      "@service-worker/*": [
-        "./service-worker/*"
-      ],
-      "@content-script/*": [
-        "./content-script/*"
-      ],
-      "@shared/*": [
-        "./shared/*"
-      ],
+      "@src/*": ["./src/*"],
+      "@service-worker/*": ["./service-worker/*"],
+      "@content-script/*": ["./content-script/*"],
+      "@shared/*": ["./shared/*"]
     }
   },
   "include": ["src"],
