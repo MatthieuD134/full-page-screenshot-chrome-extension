@@ -3,6 +3,8 @@ import viteLogo from "@src/assets/vite.svg";
 import { Button } from "@src/component/ui/button";
 import { useState } from "react";
 
+import { MESSAGE_ACTIONS } from "../shared/constants/chrome-message";
+
 function App() {
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -12,20 +14,24 @@ function App() {
     try {
       const windowId = chrome.windows.WINDOW_ID_CURRENT;
 
-      chrome.tabs.captureVisibleTab(
-        windowId,
-        {
-          format: "png",
-        },
-        (dataURL) => {
-          const link = document.createElement("a");
-          link.href = dataURL;
-          link.download = "screenshot.png";
-          link.click();
-          link.remove();
-          setIsDownloading(false);
-        },
-      );
+      // send message to content script
+      const response = await new Promise<{ data: string }>((resolve) => {
+        chrome.tabs.query({ active: true, windowId }, (tabs) => {
+          chrome.tabs.sendMessage(
+            tabs[0].id!,
+            { action: MESSAGE_ACTIONS.DOWNLOAD_PDF },
+            (response: { data: string }) => {
+              resolve(response);
+            },
+          );
+        });
+      });
+
+      // download the image
+      const link = document.createElement("a");
+      link.href = response.data;
+      link.download = "screenshot.png";
+      link.click();
     } catch (error) {
       console.error(error);
       setIsDownloading(false);
