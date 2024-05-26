@@ -1,6 +1,7 @@
 import reactLogo from "@src/assets/react.svg";
 import viteLogo from "@src/assets/vite.svg";
 import { Button } from "@src/component/ui/button";
+import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
 
 import { MESSAGE_ACTIONS } from "../shared/constants/chrome-message";
@@ -32,6 +33,8 @@ function App() {
       link.href = response.data;
       link.download = "screenshot.png";
       link.click();
+
+      setIsDownloading(false);
     } catch (error) {
       console.error(error);
       setIsDownloading(false);
@@ -52,6 +55,7 @@ function App() {
       <div className="mx-auto flex flex-col items-center gap-4">
         <Button disabled={isDownloading} onClick={downloadPNG}>
           Download PNG
+          {isDownloading && <LoaderCircle className="ml-2 animate-spin" />}
         </Button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
