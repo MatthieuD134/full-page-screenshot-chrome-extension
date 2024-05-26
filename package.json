@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build --config vite.config.ts && vite build --config vite-content-script.config.ts && vite build --config vite-service-worker.config.ts",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . && stylelint '**/*.{css,scss}' && prettier --check .",
     "preview": "vite preview",
     "prepare": "husky install"
   },
