@@ -1,30 +1,35 @@
 import reactLogo from "@src/assets/react.svg";
 import viteLogo from "@src/assets/vite.svg";
 import { Button } from "@src/component/ui/button";
-
-import { MESSAGE_ACTIONS } from "../shared/constants/chrome-message";
+import { useState } from "react";
 
 function App() {
-  const triggerAlert = async () => {
-    const [currentTab] = await chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    });
+  const [isDownloading, setIsDownloading] = useState(false);
 
-    if (!currentTab?.id) return;
+  const downloadPNG = async () => {
+    setIsDownloading(true);
 
-    // send message to service worker
-    const response = await chrome.runtime.sendMessage({
-      action: MESSAGE_ACTIONS.TRIGGER_ALERT,
-    });
-    console.log(response);
+    try {
+      const windowId = chrome.windows.WINDOW_ID_CURRENT;
 
-    await chrome.scripting.executeScript({
-      target: { tabId: currentTab.id },
-      func: () => {
-        alert("Hello from the extension!");
-      },
-    });
+      chrome.tabs.captureVisibleTab(
+        windowId,
+        {
+          format: "png",
+        },
+        (dataURL) => {
+          const link = document.createElement("a");
+          link.href = dataURL;
+          link.download = "screenshot.png";
+          link.click();
+          link.remove();
+          setIsDownloading(false);
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -39,7 +44,9 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="mx-auto flex flex-col items-center gap-4">
-        <Button onClick={triggerAlert}>Trigger Alert</Button>
+        <Button disabled={isDownloading} onClick={downloadPNG}>
+          Download PNG
+        </Button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
