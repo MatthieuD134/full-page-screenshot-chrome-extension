@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "chrome extension-vanilla-ts-starter",
+  "name": "Full Page Screenshot",
   "version": "1.0",
   "description": "",
   "action": {
